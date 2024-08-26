@@ -82,18 +82,39 @@ const updateTodoList = () => {
     textSpan.textContent = todo.text;
     li.appendChild(textSpan);
 
-    // Create delete button
+    // Create Mark as Complete button
+    const completeButton = document.createElement("button");
+    completeButton.textContent = todo.completed ? "Completed" : "Mark as complete";
+    completeButton.className = "complete-button";
+    completeButton.addEventListener("click", async () => {
+      try {
+        if (!todo.completed) {
+          await db.collection("todos").doc(todo.id).update({
+            completed: true
+          });
+          completeButton.textContent = "Completed";
+          li.classList.add("completed");
+        } else {
+          await db.collection("todos").doc(todo.id).update({
+            completed: false
+          });
+          completeButton.textContent = "Mark as complete";
+          li.classList.remove("completed");
+        }
+      } catch (e) {
+        console.error("Error updating document: ", e);
+      }
+    });
+    li.appendChild(completeButton);
+
+    // Create Delete button
     const deleteButton = document.createElement("button");
-    deleteButton.textContent = todo.completed ? "Delete" : "Complete";
-    deleteButton.className = "todo-button";
+    deleteButton.textContent = "Delete";
+    deleteButton.className = "delete-button";
     deleteButton.addEventListener("click", async () => {
       try {
-        if (deleteButton.textContent === "Delete") {
-          await db.collection("todos").doc(todo.id).delete();
-          fetchTodos(); // Refresh the list
-        } else {
-          deleteButton.textContent = "Delete";
-        }
+        await db.collection("todos").doc(todo.id).delete();
+        fetchTodos(); // Refresh the list
       } catch (e) {
         console.error("Error removing document: ", e);
       }
