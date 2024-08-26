@@ -20,8 +20,8 @@ const todoList = document.getElementById("todo-list");
 const showMoreButton = document.getElementById("show-more");
 const showLessButton = document.getElementById("show-less");
 
-let itemsVisible = 7; // Number of items to show initially
-const itemsPerPage = 7;
+let itemsPerPage = 7; // Number of items to show initially
+let allItems = []; // Array to store all fetched items
 
 // Add new to-do
 todoForm.addEventListener("submit", async (e) => {
@@ -33,10 +33,10 @@ todoForm.addEventListener("submit", async (e) => {
   try {
     await db.collection("todos").add({
       text: newTodo,
-      completed: false
+      completed: false,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp() // Add timestamp
     });
     todoInput.value = "";
-    fetchTodos(); // Refresh the list after adding a new to-do
   } catch (e) {
     console.error("Error adding document: ", e);
   }
@@ -44,18 +44,24 @@ todoForm.addEventListener("submit", async (e) => {
 
 // Retrieve and display to-dos
 const fetchTodos = async () => {
-  const querySnapshot = await db.collection("todos").get();
-  const todos = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  
+  const querySnapshot = await db.collection("todos")
+    .orderBy("timestamp") // Order by timestamp
+    .get();
+  allItems = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  updateTodoList();
+};
+
+// Update the to-do list based on the current page setting
+const updateTodoList = () => {
   todoList.innerHTML = ""; // Clear the list before adding new items
 
-  const visibleTodos = todos.slice(0, itemsVisible);
-
-  visibleTodos.forEach(todo => {
+  const itemsToDisplay = allItems.slice(0, itemsPerPage);
+  
+  itemsToDisplay.forEach((todo) => {
     const li = document.createElement("li");
     li.dataset.id = todo.id;
     li.className = todo.completed ? "completed" : "";
-    
+
     // Create checkbox for completion
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
@@ -66,7 +72,6 @@ const fetchTodos = async () => {
           completed: checkbox.checked
         });
         li.classList.toggle("completed", checkbox.checked);
-        actionButton.textContent = checkbox.checked ? "Delete" : "Complete";
       } catch (e) {
         console.error("Error updating document: ", e);
       }
@@ -77,60 +82,43 @@ const fetchTodos = async () => {
     textSpan.textContent = todo.text;
     li.appendChild(textSpan);
 
-    // Create action button
-    const actionButton = document.createElement("button");
-    actionButton.textContent = todo.completed ? "Delete" : "Complete";
-    actionButton.className = "action-button";
-    actionButton.addEventListener("click", async () => {
-      if (todo.completed) {
-        try {
+    // Create delete button
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = todo.completed ? "Delete" : "Complete";
+    deleteButton.className = "todo-button";
+    deleteButton.addEventListener("click", async () => {
+      try {
+        if (deleteButton.textContent === "Delete") {
           await db.collection("todos").doc(todo.id).delete();
-          li.remove();
-        } catch (e) {
-          console.error("Error removing document: ", e);
+          fetchTodos(); // Refresh the list
+        } else {
+          deleteButton.textContent = "Delete";
         }
-      } else {
-        try {
-          await db.collection("todos").doc(todo.id).update({
-            completed: true
-          });
-          checkbox.checked = true;
-          li.classList.add("completed");
-          actionButton.textContent = "Delete";
-        } catch (e) {
-          console.error("Error updating document: ", e);
-        }
+      } catch (e) {
+        console.error("Error removing document: ", e);
       }
     });
-    li.appendChild(actionButton);
+    li.appendChild(deleteButton);
 
     todoList.appendChild(li);
   });
 
-  // Handle "Show More" and "Show Less" button visibility
-  if (todos.length > itemsVisible) {
-    showMoreButton.style.display = 'inline-block';
-    showLessButton.style.display = 'none'; // Initially hide "Show Less"
-  } else {
-    showMoreButton.style.display = 'none';
-    showLessButton.style.display = 'none';
-  }
+  showMoreButton.style.display = allItems.length > itemsPerPage ? 'block' : 'none';
+  showLessButton.style.display = itemsPerPage > 7 ? 'block' : 'none';
 };
 
-// Show More button event
+// Show more items
 showMoreButton.addEventListener("click", () => {
-  itemsVisible += itemsPerPage;
-  fetchTodos(); // Refresh the list with more items
+  itemsPerPage += 7; // Show 7 more items
+  updateTodoList();
 });
 
-// Show Less button event
+// Show fewer items
 showLessButton.addEventListener("click", () => {
-  itemsVisible = Math.max(itemsPerPage, itemsVisible - itemsPerPage);
-  fetchTodos(); // Refresh the list with fewer items
+  itemsPerPage = Math.max(7, itemsPerPage - 7); // Show 7 fewer items, but not less than 7
+  updateTodoList();
 });
 
-// Initial fetch
+// Initial fetch and setup
 fetchTodos();
-
-// Real-time updates
 db.collection("todos").onSnapshot(fetchTodos);

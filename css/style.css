@@ -29,10 +29,10 @@ body {
   margin-top: 20px; /* Add margin-top to give space from the header */
 }
 
-/* Center the Heading */
+/* Heading Above Input Box */
 .todo-container h1 {
   margin: 0;
-  font-size: 32px; /* Adjust font size if needed */
+  font-size: 24px; /* Adjust font size if needed */
   color: #81677D; /* Matching text color for header */
   text-align: center;
   margin-bottom: 20px; /* Add space below the heading */
@@ -41,7 +41,8 @@ body {
 /* Form Styles */
 #todo-form {
   display: flex;
-  justify-content: center;
+  flex-direction: row; /* Align input and button horizontally */
+  align-items: center;
   width: 100%; /* Ensure form takes full width */
   max-width: 800px; /* Set a max-width for larger screens */
   margin-bottom: 20px;
@@ -51,7 +52,7 @@ body {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  width: 100%; /* Take up full width of the form */
+  width: calc(100% - 100px); /* Adjust width to fit alongside button */
   max-width: 600px; /* Set a maximum width for the input field */
   font-size: 16px;
 }
@@ -64,7 +65,7 @@ body {
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  margin-left: 10px;
+  margin-left: 10px; /* Space between input and button */
   
   /* Add transition for smooth color changes */
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
@@ -78,27 +79,32 @@ body {
 
 /* To-Do List Styles */
 ul#todo-list {
-  list-style: none;
+  list-style-type: none; /* Remove default list styling */
   padding: 0;
   margin: 0;
-  width: 100%;
-  max-width: 800px;
+  width: 100%; /* Ensure list takes full width */
+  max-width: 800px; /* Set a max-width for larger screens */
 }
 
 ul#todo-list li {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 10px;
   border-bottom: 1px solid #ddd;
+  margin-bottom: 10px; /* Space between items */
 }
 
-ul#todo-list li.completed {
-  text-decoration: line-through;
+ul#todo-list li.completed span {
+  text-decoration: line-through; /* Line-through for completed items */
 }
 
 ul#todo-list li input[type="checkbox"] {
-  accent-color: #81677D; /* Change the color of the checkbox */
+  margin-right: 10px; /* Space between checkbox and text */
+  accent-color: #81677D; /* Purple color for the checkbox */
+}
+
+ul#todo-list li span {
+  flex: 1; /* Allow text to take up available space */
 }
 
 ul#todo-list li button {
@@ -108,9 +114,10 @@ ul#todo-list li button {
   padding: 6px 10px;
   border-radius: 4px;
   cursor: pointer;
-  
-  /* Add transition for smooth color changes */
+  font-size: 16px;
+  text-decoration: none; /* Ensure no underline or line-through */
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  margin-left: 10px; /* Space between checkbox and button */
 }
 
 ul#todo-list li button:hover {
@@ -119,8 +126,8 @@ ul#todo-list li button:hover {
   border-color: #81677D; /* Purple border on hover */
 }
 
-/* Show More / Show Less Buttons */
-button#show-more, button#show-less {
+/* Show More / Show Less Button Styles */
+#show-more, #show-less {
   padding: 10px 15px;
   background-color: #81677D; /* Purple background color */
   color: #ffffff; /* White text color */
@@ -128,10 +135,12 @@ button#show-more, button#show-less {
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  margin-top: 10px;
+  margin-top: 10px; /* Space above the button */
+  display: none; /* Initially hidden */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-button#show-more:hover, button#show-less:hover {
+#show-more:hover, #show-less:hover {
   background-color: #ffffff; /* White background on hover */
   color: #81677D; /* Purple text on hover */
   border-color: #81677D; /* Purple border on hover */
