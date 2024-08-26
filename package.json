@@ -4,13 +4,14 @@
   "main": "app.js",
   "scripts": {
     "start": "live-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["todo", "task", "app", "simple-todo-list"],
+  "author": "Your Name",
   "license": "ISC",
-  "description": "",
+  "description": "A simple todo list app",
   "devDependencies": {
+    "jest": "^29.7.0",
     "live-server": "^1.2.2"
   }
 }
