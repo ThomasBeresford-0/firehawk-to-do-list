@@ -11,27 +11,13 @@ body {
   display: flex;
   align-items: center;
   background-color: #ffffff; /* White background for header */
-  padding: 10px 20px; /* Adjusted padding for a smaller header */
+  padding: 10px 20px; /* Padding for the header */
   border-bottom: 1.5px solid #ddd; /* Light border at the bottom */
-  height: 80px; /* Reduced the height of the header */
 }
 
 .header .logo {
-  height: 60px; /* Reduced logo size */
-  width: auto;  /* Maintain aspect ratio */
-}
-
-/* Title Container */
-.title-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px; /* Space between header and title */
-}
-
-.title-container h1 {
-  margin: 0;
-  font-size: 36px; /* Title font size */
-  color: #81677D; /* Matching text color for title */
+  height: 75px; /* Adjust height of the logo */
+  width: auto; /* Maintain aspect ratio */
 }
 
 /* To-Do List Container */
@@ -40,12 +26,24 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  margin-top: 20px; /* Add margin-top to give space from the header */
+}
+
+/* Center the Heading */
+.todo-container h1 {
+  margin: 0;
+  font-size: 36px; /* Adjust font size if needed */
+  color: #81677D; /* Matching text color for header */
+  text-align: center;
+  margin-bottom: 20px; /* Add space below the heading */
 }
 
 /* Form Styles */
 #todo-form {
   display: flex;
   justify-content: center;
+  width: 100%; /* Ensure form takes full width */
+  max-width: 800px; /* Set a max-width for larger screens */
   margin-bottom: 20px;
 }
 
@@ -53,7 +51,8 @@ body {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  width: 70%;
+  width: 100%; /* Take up full width of the form */
+  max-width: 600px; /* Set a maximum width for the input field */
   font-size: 16px;
 }
 
