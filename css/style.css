@@ -12,7 +12,7 @@ body {
   align-items: center;
   background-color: #ffffff;
   padding: 10px 20px;
-  border-bottom: 1.5px solid #ccc;
+  border-bottom: 1.5px solid #ddd;
 }
 
 .header .logo {
@@ -40,10 +40,11 @@ body {
 /* Form Styles */
 #todo-form {
   display: flex;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
   width: 100%;
-  max-width: 800px;
+  max-width: 700px;
   margin-bottom: 20px;
 }
 
@@ -51,8 +52,7 @@ body {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  width: 100%;
-  max-width: 600px;
+  flex-grow: 1;
   font-size: 16px;
 }
 
@@ -80,7 +80,7 @@ ul#todo-list {
   padding: 0;
   margin: 0;
   width: 100%;
-  max-width: 600px; /* Matching the width of the text input field */
+  max-width: 700px;
 }
 
 ul#todo-list li {
@@ -89,6 +89,9 @@ ul#todo-list li {
   padding: 10px;
   border-bottom: 1px solid #ddd;
   margin-bottom: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 ul#todo-list li.completed span {
@@ -112,11 +115,31 @@ ul#todo-list li button {
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  margin-left: 10px;
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  margin-left: 10px;
 }
 
 ul#todo-list li button:hover {
+  background-color: #ffffff;
+  color: #81677D;
+  border-color: #81677D;
+}
+
+/* Show More / Show Less Button Styles */
+#show-more, #show-less {
+  padding: 10px 15px;
+  background-color: #81677D;
+  color: #ffffff;
+  border: 2px solid #81677D;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  display: none;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+#show-more:hover, #show-less:hover {
   background-color: #ffffff;
   color: #81677D;
   border-color: #81677D;
