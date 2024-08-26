@@ -1,3 +1,47 @@
+/* General Styles */
+body {
+  font-family: 'Montserrat', sans-serif; /* Ensure Montserrat is applied globally */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Header Styles */
+.header {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff; /* White background for header */
+  padding: 10px 20px; /* Adjusted padding for a smaller header */
+  border-bottom: 1.5px solid #ddd; /* Light border at the bottom */
+  height: 80px; /* Reduced the height of the header */
+}
+
+.header .logo {
+  height: 60px; /* Reduced logo size */
+  width: auto;  /* Maintain aspect ratio */
+}
+
+/* Title Container */
+.title-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* Space between header and title */
+}
+
+.title-container h1 {
+  margin: 0;
+  font-size: 36px; /* Title font size */
+  color: #81677D; /* Matching text color for title */
+}
+
+/* To-Do List Container */
+.todo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
 /* Form Styles */
 #todo-form {
   display: flex;

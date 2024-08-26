@@ -3,13 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To-Do List</title>
+  <title>Firehawk To-Do List</title>
   <link rel="stylesheet" href="css/style.css">
+  <!-- Add Google Fonts for Montserrat -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
 </head>
 <body>
 
+  <header class="header">
+    <img src="assets/firehawk-logo.png" alt="Firehawk Logo" class="logo">
+  </header>
+
+  <div class="title-container">
+    <h1>Firehawk To-Do List</h1>
+  </div>
+
   <div class="todo-container">
-    <h1>My To-Do List</h1>
     <form id="todo-form">
       <input type="text" id="todo-input" placeholder="Enter a new to-do">
       <button type="submit">Add To-Do</button>
@@ -24,6 +33,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
   <!-- Your app's JavaScript file -->
-  <script src="app.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
