@@ -3,7 +3,6 @@ function addTodo(todoList, task) {
     return todoList;
   }
   
-  // Jest test case
   describe("Todo List", () => {
     it("should add a task to the list", () => {
       const todos = [];

@@ -1,4 +1,3 @@
-// Initialize Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyA5rS9IBjLPt30osyX2f1cVtc_C-3AXSIQ",
   authDomain: "to-do-list-app-8d59e.firebaseapp.com",
@@ -9,26 +8,23 @@ const firebaseConfig = {
   measurementId: "G-WNQ2HMTBGX"
 };
 
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// Elements
 const todoForm = document.getElementById("todo-form");
 const todoInput = document.getElementById("todo-input");
 const todoList = document.getElementById("todo-list");
 const showMoreButton = document.getElementById("show-more");
 const showLessButton = document.getElementById("show-less");
 
-let itemsPerPage = 7; // Number of items to show initially
-let allItems = []; // Array to store all fetched items
+let itemsPerPage = 7; 
+let allItems = []; 
 
-// Add new to-do
 todoForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   
   const newTodo = todoInput.value.trim();
-  const priority = document.getElementById('todo-priority').value; // Get priority
+  const priority = document.getElementById('todo-priority').value; 
 
   if (newTodo === "") return;
 
@@ -39,24 +35,22 @@ todoForm.addEventListener("submit", async (e) => {
       completed: false,
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     });
-    todoInput.value = ""; // Clear the input field after adding a task
+    todoInput.value = ""; 
   } catch (e) {
     console.error("Error adding document: ", e);
   }
 });
 
-// Retrieve and display to-dos
 const fetchTodos = async () => {
   const querySnapshot = await db.collection("todos")
-    .orderBy("timestamp") // Order by timestamp
+    .orderBy("timestamp") 
     .get();
   allItems = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   updateTodoList();
 };
 
-// Update the to-do list to show priorities
 const updateTodoList = () => {
-  todoList.innerHTML = ""; // Clear the list before adding new items
+  todoList.innerHTML = ""; 
 
   const itemsToDisplay = allItems.slice(0, itemsPerPage);
   
@@ -65,7 +59,6 @@ const updateTodoList = () => {
     li.dataset.id = todo.id;
     li.className = todo.completed ? "completed" : "";
 
-    // Create checkbox for completion
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = todo.completed;
@@ -81,12 +74,10 @@ const updateTodoList = () => {
     });
     li.appendChild(checkbox);
 
-    // Display task text
     const textSpan = document.createElement("span");
     textSpan.textContent = todo.text;
     li.appendChild(textSpan);
 
-    // Create a priority tag
     if (todo.priority) {
       const priorityTag = document.createElement("span");
       priorityTag.classList.add("priority-tag");
@@ -95,14 +86,13 @@ const updateTodoList = () => {
       li.appendChild(priorityTag);
     }
 
-    // Create Delete button
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Delete";
     deleteButton.className = "delete-button";
     deleteButton.addEventListener("click", async () => {
       try {
         await db.collection("todos").doc(todo.id).delete();
-        fetchTodos(); // Refresh the list
+        fetchTodos(); 
       } catch (e) {
         console.error("Error removing document: ", e);
       }
@@ -118,13 +108,13 @@ const updateTodoList = () => {
 
 // Show more items
 showMoreButton.addEventListener("click", () => {
-  itemsPerPage += 7; // Show 7 more items
+  itemsPerPage += 7; 
   updateTodoList();
 });
 
 // Show fewer items
 showLessButton.addEventListener("click", () => {
-  itemsPerPage = Math.max(7, itemsPerPage - 7); // Show 7 fewer items, but not less than 7
+  itemsPerPage = Math.max(7, itemsPerPage - 7); 
   updateTodoList();
 });
 
