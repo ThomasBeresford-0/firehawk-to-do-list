@@ -1,6 +1,3 @@
-// __tests__/app.test.js
-
-// Example of a function in your app you want to test
 function addTodo(todoList, task) {
     todoList.push(task);
     return todoList;

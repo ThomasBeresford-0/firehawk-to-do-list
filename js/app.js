@@ -28,15 +28,18 @@ todoForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   
   const newTodo = todoInput.value.trim();
+  const priority = document.getElementById('todo-priority').value; // Get priority
+
   if (newTodo === "") return;
 
   try {
     await db.collection("todos").add({
       text: newTodo,
+      priority: priority, // Save priority
       completed: false,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp() // Add timestamp
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
     });
-    todoInput.value = "";
+    todoInput.value = ""; // Clear the input field after adding a task
   } catch (e) {
     console.error("Error adding document: ", e);
   }
@@ -51,7 +54,7 @@ const fetchTodos = async () => {
   updateTodoList();
 };
 
-// Update the to-do list based on the current page setting
+// Update the to-do list to show priorities
 const updateTodoList = () => {
   todoList.innerHTML = ""; // Clear the list before adding new items
 
@@ -78,34 +81,19 @@ const updateTodoList = () => {
     });
     li.appendChild(checkbox);
 
+    // Display task text
     const textSpan = document.createElement("span");
     textSpan.textContent = todo.text;
     li.appendChild(textSpan);
 
-    // Create Mark as Complete button
-    const completeButton = document.createElement("button");
-    completeButton.textContent = todo.completed ? "Completed" : "Mark as complete";
-    completeButton.className = "complete-button";
-    completeButton.addEventListener("click", async () => {
-      try {
-        if (!todo.completed) {
-          await db.collection("todos").doc(todo.id).update({
-            completed: true
-          });
-          completeButton.textContent = "Completed";
-          li.classList.add("completed");
-        } else {
-          await db.collection("todos").doc(todo.id).update({
-            completed: false
-          });
-          completeButton.textContent = "Mark as complete";
-          li.classList.remove("completed");
-        }
-      } catch (e) {
-        console.error("Error updating document: ", e);
-      }
-    });
-    li.appendChild(completeButton);
+    // Create a priority tag
+    if (todo.priority) {
+      const priorityTag = document.createElement("span");
+      priorityTag.classList.add("priority-tag");
+      priorityTag.textContent = todo.priority;
+      priorityTag.classList.add(todo.priority.toLowerCase() + "-priority"); // Add a class based on priority
+      li.appendChild(priorityTag);
+    }
 
     // Create Delete button
     const deleteButton = document.createElement("button");
