@@ -31,7 +31,7 @@ todoForm.addEventListener("submit", async (e) => {
   try {
     await db.collection("todos").add({
       text: newTodo,
-      priority: priority, // Save priority
+      priority: priority, 
       completed: false,
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     });
@@ -82,7 +82,7 @@ const updateTodoList = () => {
       const priorityTag = document.createElement("span");
       priorityTag.classList.add("priority-tag");
       priorityTag.textContent = todo.priority;
-      priorityTag.classList.add(todo.priority.toLowerCase() + "-priority"); // Add a class based on priority
+      priorityTag.classList.add(todo.priority.toLowerCase() + "-priority"); 
       li.appendChild(priorityTag);
     }
 
@@ -106,18 +106,18 @@ const updateTodoList = () => {
   showLessButton.style.display = itemsPerPage > 7 ? 'block' : 'none';
 };
 
-// Show more items
+// Show more items function
 showMoreButton.addEventListener("click", () => {
   itemsPerPage += 7; 
   updateTodoList();
 });
 
-// Show fewer items
+// Show fewer items function
 showLessButton.addEventListener("click", () => {
   itemsPerPage = Math.max(7, itemsPerPage - 7); 
   updateTodoList();
 });
 
-// Initial fetch and setup
+// Initial fetch and setup function
 fetchTodos();
 db.collection("todos").onSnapshot(fetchTodos);
